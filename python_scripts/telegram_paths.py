@@ -8,13 +8,27 @@ from pathlib import Path
 from typing import Iterable, Sequence
 
 
-# Source layout: <repo>/python_scripts/*.py
-# Frozen layout (PyInstaller): executable is launched from app/<os>/ and should
-# use the current working directory to find configs/data/temp.
-if getattr(sys, "frozen", False):
-    PROJECT_ROOT = Path.cwd()
-else:
-    PROJECT_ROOT = Path(__file__).resolve().parent.parent
+def detect_project_root() -> Path:
+    # Source layout: <repo>/python_scripts/*.py
+    if not getattr(sys, "frozen", False):
+        return Path(__file__).resolve().parent.parent
+
+    # Frozen layout primary target:
+    # <repo>/app/<os>/<executable>  -> project root is 2 levels up from app/<os>.
+    exe_dir = Path(sys.executable).resolve().parent
+    if exe_dir.parent.name == "app":
+        candidate = exe_dir.parent.parent
+        if (candidate / "configs.yaml").exists():
+            return candidate
+
+    # Fallbacks for relocated/shared binaries.
+    cwd = Path.cwd()
+    if (cwd / "configs.yaml").exists():
+        return cwd
+    return exe_dir
+
+
+PROJECT_ROOT = detect_project_root()
 
 DEFAULT_CONFIG_PATH = PROJECT_ROOT / "configs.yaml"
 DEFAULT_TEMP_DIR = PROJECT_ROOT / "temp"
