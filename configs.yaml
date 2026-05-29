@@ -27,9 +27,12 @@ delete_temp_before_run: false
 
 # Telegram API exporter config (python_scripts/export_folder_chats_api.py)
 # 1) Create app credentials at https://my.telegram.org
-# 2) Fill values below.
-telegram_api_id: null
-telegram_api_hash: null
-telegram_phone_number: null
+# 2) Put values into .env and keep keys below as-is, e.g.:
+#    TELEGRAM_API_ID=123456
+#    TELEGRAM_API_HASH=your_api_hash
+#    TELEGRAM_PHONE_NUMBER=+15551234567
+telegram_api_id: "${TELEGRAM_API_ID}"
+telegram_api_hash: "${TELEGRAM_API_HASH}"
+telegram_phone_number: "${TELEGRAM_PHONE_NUMBER}"
 telegram_folder_title: null
 telegram_session_dir: "./data/.telegram_session"
