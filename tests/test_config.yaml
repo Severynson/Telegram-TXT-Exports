@@ -1,0 +1,9 @@
+telegram_download_folder: "./fixtures_downloads"
+telegram_download_folders: []
+include_autodetected_roots: false
+transfer_mode: copy
+temp_dir: "../temp"
+output_dir: "../data/compiled"
+recursive_search: true
+max_search_depth: 4
+delete_temp_before_run: true

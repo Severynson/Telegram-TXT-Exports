@@ -1,0 +1,25 @@
+# Telegram chat tools config.
+#
+# If autodetection fails, set this manually.
+# macOS example:   telegram_download_folder: "/Users/you/Downloads/Telegram"
+# Windows example: telegram_download_folder: "C:/Users/you/Downloads/Telegram"
+# Linux example:   telegram_download_folder: "/home/you/Downloads/Telegram"
+
+telegram_download_folder: null
+
+# Extra roots to scan for ChatExport_* folders.
+telegram_download_folders: []
+
+# Include common default locations such as ~/Downloads/Telegram and
+# ~/Downloads/Telegram Desktop.
+include_autodetected_roots: true
+
+# The compiler copies exports into temp by default. Use "move" only if you want
+# exports moved into this project before conversion.
+transfer_mode: copy
+
+temp_dir: "./temp"
+output_dir: "./data/compiled"
+recursive_search: true
+max_search_depth: 4
+delete_temp_before_run: false
