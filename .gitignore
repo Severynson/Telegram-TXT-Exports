@@ -1,4 +1,5 @@
 data/compiled/
+temp/
 .claude/
 
 # In .gitignore because ipynb reruns cause output difference and "change" of file for git.
