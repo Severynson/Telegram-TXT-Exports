@@ -33,6 +33,7 @@ PROJECT_ROOT = detect_project_root()
 DEFAULT_CONFIG_PATH = PROJECT_ROOT / "configs.yaml"
 DEFAULT_TEMP_DIR = PROJECT_ROOT / "temp"
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "data" / "compiled"
+DEFAULT_DOTENV_PATH = PROJECT_ROOT / ".env"
 
 
 @dataclass(frozen=True)
@@ -63,6 +64,29 @@ def parse_scalar(value: str) -> object:
     ):
         return value[1:-1]
     return value
+
+
+def load_dotenv_file(path: Path = DEFAULT_DOTENV_PATH) -> None:
+    if not path.exists():
+        return
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[7:].strip()
+        if "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+        if not key:
+            continue
+        if (value.startswith('"') and value.endswith('"')) or (
+            value.startswith("'") and value.endswith("'")
+        ):
+            value = value[1:-1]
+        os.environ.setdefault(key, value)
 
 
 def read_simple_yaml(path: Path) -> dict[str, object]:
@@ -107,6 +131,7 @@ def expand_path(value: object, base_dir: Path | None = None) -> Path | None:
 
 
 def load_config(config_path: Path = DEFAULT_CONFIG_PATH) -> Config:
+    load_dotenv_file()
     raw = read_simple_yaml(config_path)
     base_dir = config_path.parent
     explicit_folder = expand_path(raw.get("telegram_download_folder"), base_dir)

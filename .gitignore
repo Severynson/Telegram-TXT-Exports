@@ -1,4 +1,6 @@
 data/compiled/
+data/.telegram_session/
+*.session
 temp/
 .claude/
 

@@ -34,5 +34,5 @@ delete_temp_before_run: false
 telegram_api_id: "${TELEGRAM_API_ID}"
 telegram_api_hash: "${TELEGRAM_API_HASH}"
 telegram_phone_number: "${TELEGRAM_PHONE_NUMBER}"
-telegram_folder_title: null
+telegram_folder_title: IntellDetect # [use your Telegram folder title here]
 telegram_session_dir: "./data/.telegram_session"

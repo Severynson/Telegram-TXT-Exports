@@ -22,6 +22,7 @@ TARGETS = {
 SCRIPTS = {
     "clean_old_exports": SCRIPTS_DIR / "clean_old_exports.py",
     "chats_to_txt": SCRIPTS_DIR / "chats_to_txt.py",
+    "export_folder_chats_api": SCRIPTS_DIR / "export_folder_chats_api.py",
 }
 
 
@@ -35,10 +36,16 @@ def platform_key() -> str:
     raise RuntimeError(f"Unsupported platform for executable build: {sys.platform}")
 
 
-def ensure_pyinstaller() -> None:
-    if shutil.which("pyinstaller"):
-        return
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "pyinstaller"])
+def ensure_build_dependencies() -> None:
+    packages: list[str] = []
+    if not shutil.which("pyinstaller"):
+        packages.append("pyinstaller")
+    try:
+        __import__("telethon")
+    except ImportError:
+        packages.append("telethon")
+    if packages:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", *packages])
 
 
 def run_pyinstaller(script_name: str, script_path: Path, out_dir: Path) -> Path:
@@ -96,7 +103,7 @@ def main() -> int:
         shutil.rmtree(out_dir, ignore_errors=True)
         shutil.rmtree(BUILD_ROOT, ignore_errors=True)
 
-    ensure_pyinstaller()
+    ensure_build_dependencies()
     out_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"Building native executables for: {folder_name}")
