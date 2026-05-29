@@ -20,6 +20,16 @@ transfer_mode: copy
 
 temp_dir: "./temp"
 output_dir: "./data/compiled"
+raw_dir: "./data/raw"
 recursive_search: true
 max_search_depth: 4
 delete_temp_before_run: false
+
+# Telegram API exporter config (python_scripts/export_folder_chats_api.py)
+# 1) Create app credentials at https://my.telegram.org
+# 2) Fill values below.
+telegram_api_id: null
+telegram_api_hash: null
+telegram_phone_number: null
+telegram_folder_title: null
+telegram_session_dir: "./data/.telegram_session"
